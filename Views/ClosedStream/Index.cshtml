@@ -1,0 +1,13 @@
+﻿@{
+    ViewBag.Title = "Index";
+}
+
+@*<h2>Exception: "OutputStream is not available when a custom TextWriter is used."</h2>
+<p>
+<a href="@Html.Action("IndexPdf")">This throws an Exception</a>
+</p>*@
+
+<h2>Correct!</h2>
+<p>
+<a href="@Url.Action("IndexPdf")" target='_blank'>This works!</a>
+</p>

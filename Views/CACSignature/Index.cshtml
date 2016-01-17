@@ -1,0 +1,31 @@
+﻿@model kuujinbo.StackOverflow.iTextSharp.MVC.Models.CACSignatureTester
+@{
+    ViewBag.Title = "CAC Digital Signature Example";
+}
+
+<h2>Sign a Test PDF</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.Hidden("rawBase64PdfData", Model.DataToSign)
+    <div>
+        <button id="signButton" type="submit" class="btn btn-success">
+            <span class="glyphicon glyphicon-pencil"></span> Sign
+        </button>
+    </div>
+}
+
+
+@section scripts
+{
+    <script src='~/Scripts/CACSignature.js'></script>
+    <script type="text/javascript">
+        var rawBase64PdfData = document.getElementById('rawBase64PdfData').value;
+        document.getElementById('signButton')
+            .addEventListener('click', signPdf, false);
+
+        function signPdf(e) {
+            document.getElementById('signedValue').value = pdfSigner.signText(rawDataBase64);
+        }
+    </script>
+}
