@@ -117,9 +117,11 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\ClosedStreamController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\UploadMultipleImagesController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\Pdf.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -168,6 +170,7 @@
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\ClosedStream\Index.cshtml" />
     <Content Include="Views\CACSignature\Index.cshtml" />
+    <Content Include="Views\UploadMultipleImages\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
