@@ -115,7 +115,7 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
-    <Compile Include="Controllers\ClosedStreamController.cs" />
+    <Compile Include="Controllers\OutputStreamNotAvailableController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\UploadMultipleImagesController.cs" />
     <Compile Include="Global.asax.cs">
@@ -168,7 +168,7 @@
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
-    <Content Include="Views\ClosedStream\Index.cshtml" />
+    <Content Include="Views\OutputStreamNotAvailable\Index.cshtml" />
     <Content Include="Views\UploadMultipleImages\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>

@@ -12,7 +12,7 @@ namespace kuujinbo.StackOverflow.iTextSharp.MVC.Controllers
         // stub for example
     }
 
-    public class ClosedStreamController : Controller
+    public class OutputStreamNotAvailableController : Controller
     {
         public ActionResult Index()
         {
