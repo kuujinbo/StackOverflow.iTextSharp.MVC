@@ -8,25 +8,46 @@
     @Scripts.Render("~/bundles/modernizr")
 </head>
 <body>
-    <div class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                @Html.ActionLink("Application name", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+    <div>
+        <nav class="navbar navbar-inverse navbar-fixed-top" id="navbar-example">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <button data-target=".bs-example-js-navbar-collapse" data-toggle="collapse" type="button" class="navbar-toggle collapsed">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    @Html.ActionLink(
+                        "StackOverflow.iTextSharp.MVC Answers",
+                        "Index", "Home", new { area = "" }, new { @class = "navbar-brand" }
+                    )
+                </div>
+                <div class="collapse navbar-collapse bs-example-js-navbar-collapse"> 
+                    <ul class="nav navbar-nav"> 
+                        <li class="dropdown"><a aria-expanded="false" aria-haspopup="true" role="button" data-toggle="dropdown" class="dropdown-toggle" href="#" id="drop1"> Code 
+                            <span class="caret"></span></a> 
+                        <ul aria-labelledby="drop1" class="dropdown-menu"> 
+                            <li>@Html.ActionLink("Closed Stream", "Index", "ClosedStream")</li>
+                            <li>@Html.ActionLink("Upload Multiple Images", "Index", "UploadMultipleImages")</li>
+                            @*<li class="divider" role="separator"></li> 
+                            <li><a href="#">Separated link</a></li>*@
+                        </ul> 
+                        </li>
+                    </ul> 
+                </div>
             </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                </ul>
-            </div>
-        </div>
+        </nav>
     </div>
+
     <div class="container body-content">
         @RenderBody()
+    </div>
+
+    <div class="panel-footer">
+        <a href='http://stackoverflow.com/users/604196/kuujinbo'>
+            <img src='http://stackoverflow.com/users/flair/604196.png?theme=clean' width='208' height='58' alt='profile for kuujinbo at Stack Overflow, Q&amp;A for professional and enthusiast programmers' title='profile for kuujinbo at Stack Overflow, Q&amp;A for professional and enthusiast programmers' style='border:1px groove #fff' />
+        </a>
     </div>
 
     @Scripts.Render("~/bundles/jquery")

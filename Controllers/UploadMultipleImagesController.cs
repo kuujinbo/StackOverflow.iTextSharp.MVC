@@ -26,7 +26,7 @@ namespace kuujinbo.StackOverflow.iTextSharp.MVC.Controllers
             // image file extension check ignore for brevity
             var fileList = files.Where(h => h != null && h.ContentLength > 0);
             if (fileList.Count() < 1)
-                throw new Exception("no files uploaed");
+                throw new Exception("no files uploaded");
 
             var absoluteX = 20;
             var absoluteY = absoluteX;
