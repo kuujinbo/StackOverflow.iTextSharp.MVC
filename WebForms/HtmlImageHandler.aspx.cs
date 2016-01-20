@@ -32,7 +32,7 @@ namespace kuujinbo.StackOverflow.iTextSharp.MVC.WebForms
                 {
                     using (var htmlWriter = new HtmlTextWriter(stringWriter))
                     {
-                        // replace with GridView control Id!
+                        // replace 'ConvertControlToPdf' with **YOUR** GridView control Id!
                         ConvertControlToPdf.RenderControl(htmlWriter);
                     }
                 }
@@ -44,8 +44,8 @@ namespace kuujinbo.StackOverflow.iTextSharp.MVC.WebForms
                 var ih = new ImageHander() { BaseUri = Request.Url.ToString() };
 
                 // dictionary key 'img_provider' is **HARD-CODED**, in 
-                // iTextSharp 5.0.0 - 5.0.5, so you may need to use this
-                // interfaceProps.Add("img_provider", ih);
+                // iTextSharp 5.0.0 - 5.0.5, so you may need to use next line
+                // providers.Add("img_provider", ih);
                 providers.Add(HTMLWorker.IMG_PROVIDER, ih);
                 //            ^^^^^^^^^^^^^^^^^^^^^^^ - constant added in 5.0.6
                 using (var sr = new StringReader(html.ToString()))
@@ -61,10 +61,10 @@ namespace kuujinbo.StackOverflow.iTextSharp.MVC.WebForms
             Response.End();
         }
 
-        // handle <img> tags in any System.Web.UI.Control (GridView) with:
-        // 1. base64 Data URI scheme - https://en.wikipedia.org/wiki/Data_URI_scheme
-        // 2. absolute URLs on a remote/local server 
-        // 3. relative URLs on local server (DEFAULT)
+// handle <img> tags in any System.Web.UI.Control (GridView) with:
+// 1. base64 Data URI scheme - https://en.wikipedia.org/wiki/Data_URI_scheme
+// 2. relative URLs on local server
+// 3. absolute URLs on a remote/local server (DEFAULT)
         public class ImageHander : IImageProvider
         {
             public string BaseUri { get; set; }
