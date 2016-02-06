@@ -115,7 +115,6 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
-    <Compile Include="Controllers\HtmlImageHandlerController.cs" />
     <Compile Include="Controllers\OutputStreamNotAvailableController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\UploadMultipleImagesController.cs" />
@@ -184,7 +183,6 @@
     <Folder Include="App_Data\" />
     <Folder Include="Images\" />
     <Folder Include="Models\" />
-    <Folder Include="Views\HtmlImageHandler\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

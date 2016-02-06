@@ -10,7 +10,7 @@
 <body>
     <form id="form1" runat="server">
     <div>
-
+        <asp:TextBox ID="TextBox2" runat="server"></asp:TextBox>
 <%--
     HtmlTable used for brevity - HTML conversion for a GridView is
     **EXACTLY** the same
