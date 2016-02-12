@@ -48,6 +48,10 @@
       <HintPath>..\packages\iTextSharp.5.5.8\lib\itextsharp.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="itextsharp.xmlworker, Version=5.5.8.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
+      <HintPath>packages\itextsharp.xmlworker.5.5.8\lib\itextsharp.xmlworker.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.8.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
@@ -115,6 +119,7 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\KnockoutJS\DomToPdfController.cs" />
     <Compile Include="Controllers\OutputStreamNotAvailableController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\UploadMultipleImagesController.cs" />
@@ -148,6 +153,10 @@
     <Content Include="Content\bootstrap-theme.css.map" />
     <Content Include="Content\bootstrap.min.css.map" />
     <Content Include="Content\bootstrap.css.map" />
+    <Content Include="Scripts\ajax\FileSaver.js" />
+    <Content Include="Scripts\ajax\jquery-binary.js" />
+    <Content Include="Scripts\ajax\jquery.binarytransport.js" />
+    <Content Include="Scripts\libs\knockout-3.4.0.js" />
     <Content Include="WebForms\HtmlImageHandler.aspx" />
     <None Include="Scripts\libs\jquery-2.2.0.intellisense.js" />
     <Content Include="Scripts\libs\bootstrap.js" />
@@ -178,6 +187,7 @@
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\OutputStreamNotAvailable\Index.cshtml" />
     <Content Include="Views\UploadMultipleImages\Index.cshtml" />
+    <Content Include="Views\DomToPdf\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

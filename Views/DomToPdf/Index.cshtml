@@ -1,0 +1,54 @@
+﻿@{
+    ViewBag.Title = "Index";
+}
+
+<h4>People</h4>
+<ul id='wanted' data-bind="foreach: people">
+    <li>
+        Name at position <span data-bind="text: $index"> </span>:
+        <span data-bind="text: name"> </span>
+        <a href="#" data-bind="click: $parent.removePerson">Remove</a>
+    </li>
+</ul>
+<button data-bind="click: addPerson">Add</button>
+<button data-bind="click: getPdf">Get PDF</button>
+
+@*
+binary ajax support has been avaialble for over four years:
+https://bugs.jquery.com/ticket/11461
+*@
+
+@section scripts
+{
+<script src="~/Scripts/libs/knockout-3.4.0.js"></script>
+@*https://github.com/eligrey/FileSaver.js*@
+<script src="~/Scripts/ajax/FileSaver.js"></script>
+@*https://github.com/henrya/js-jquery/tree/master/BinaryTransport*@
+<script src="~/Scripts/ajax/jquery.binarytransport.js"></script>
+<script src="~/Scripts/ajax/jquery-binary.js"></script>
+<script type="text/javascript">
+    function AppViewModel() {
+        var self = this;
+
+        self.getPdf = function (data, event) {
+            $(this).downloadFile(
+                '@Url.Action("Index", "DomToPdf")',
+                { xHtml: $('#wanted').prop('outerHTML') }
+            );
+        }
+
+        self.people = ko.observableArray([
+            { name: 'Bert' },
+            { name: 'Charles' },
+            { name: 'Denise' }
+        ]);
+        self.addPerson = function () {
+            self.people.push({ name: "New at " + new Date() });
+        };
+        self.removePerson = function () {
+            self.people.remove(this);
+        }
+    }
+    ko.applyBindings(new AppViewModel());
+</script>
+}
