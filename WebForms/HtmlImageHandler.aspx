@@ -8,9 +8,7 @@
 <title></title>
 </head>
 <body>
-    <form id="form1" runat="server">
-    <div>
-        <asp:TextBox ID="TextBox2" runat="server"></asp:TextBox>
+<form id="form1" runat="server">
 <%--
     HtmlTable used for brevity - HTML conversion for a GridView is
     **EXACTLY** the same
@@ -34,9 +32,6 @@
   oncommand='ProcessHtml'
   text='Convert Html Control to PDF'
 />
-
-
-</div> 
 </form>
 </body>
 </html>

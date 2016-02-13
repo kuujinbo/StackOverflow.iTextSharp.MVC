@@ -1,6 +1,12 @@
 ﻿@{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "knockout JavaScript framework (MVC/MVVM)";
 }
+
+@*<table  cellpadding='4' cellspacing='4' style='background:red; border:1px;'>
+    <tr><td style='text-align: center;font-size:10px;color:#99999B;'>00000000</td><td>00</td><td>00</td><td>00</td></tr>
+    <tr><td style='text-align: left;font-size:8px;color:#fff;'>00000000</td><td>00</td><td>00</td><td>00</td></tr>
+    <tr><td style='text-align: right;font-size:20px;color:#000;'>00000000</td><td>00</td><td>00</td><td>00</td></tr>
+</table>*@
 
 <h4>People</h4>
 <ul id='wanted' data-bind="foreach: people">
@@ -10,45 +16,45 @@
         <a href="#" data-bind="click: $parent.removePerson">Remove</a>
     </li>
 </ul>
-<button data-bind="click: addPerson">Add</button>
-<button data-bind="click: getPdf">Get PDF</button>
+    <button class='btn btn-primary' data-bind="click: addPerson">Add</button>
+    <button class='btn btn-success' data-bind="click: getPdf">Get PDF</button>
 
-@*
-binary ajax support has been avaialble for over four years:
-https://bugs.jquery.com/ticket/11461
-*@
+    @*
+        binary ajax support has been avaialble for over four years:
+        https://bugs.jquery.com/ticket/11461
+    *@
 
-@section scripts
+    @section scripts
 {
-<script src="~/Scripts/libs/knockout-3.4.0.js"></script>
-@*https://github.com/eligrey/FileSaver.js*@
-<script src="~/Scripts/ajax/FileSaver.js"></script>
-@*https://github.com/henrya/js-jquery/tree/master/BinaryTransport*@
-<script src="~/Scripts/ajax/jquery.binarytransport.js"></script>
-<script src="~/Scripts/ajax/jquery-binary.js"></script>
-<script type="text/javascript">
-    function AppViewModel() {
-        var self = this;
+        <script src="~/Scripts/libs/knockout-3.4.0.js"></script>
+        @*https://github.com/eligrey/FileSaver.js*@
+        <script src="~/Scripts/ajax/FileSaver.js"></script>
+        @*https://github.com/henrya/js-jquery/tree/master/BinaryTransport*@
+        <script src="~/Scripts/ajax/jquery.binarytransport.js"></script>
+        <script src="~/Scripts/ajax/jquery-binary.js"></script>
+        <script type="text/javascript">
+            function AppViewModel() {
+                var self = this;
 
-        self.getPdf = function (data, event) {
-            $(this).downloadFile(
-                '@Url.Action("Index", "DomToPdf")',
-                { xHtml: $('#wanted').prop('outerHTML') }
-            );
-        }
+                self.getPdf = function (data, event) {
+                    $(this).downloadFile(
+                        '@Url.Action("Index", "DomToPdf")',
+                        { xHtml: $('#wanted').prop('outerHTML') }
+                    );
+                }
 
-        self.people = ko.observableArray([
-            { name: 'Bert' },
-            { name: 'Charles' },
-            { name: 'Denise' }
-        ]);
-        self.addPerson = function () {
-            self.people.push({ name: "New at " + new Date() });
-        };
-        self.removePerson = function () {
-            self.people.remove(this);
-        }
+                self.people = ko.observableArray([
+                    { name: 'Bert' },
+                    { name: 'Charles' },
+                    { name: 'Denise' }
+                ]);
+                self.addPerson = function () {
+                    self.people.push({ name: "New at " + new Date() });
+                };
+                self.removePerson = function () {
+                    self.people.remove(this);
+                }
+            }
+            ko.applyBindings(new AppViewModel());
+        </script>
     }
-    ko.applyBindings(new AppViewModel());
-</script>
-}

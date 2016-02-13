@@ -1,48 +1,8 @@
-﻿body {
-    padding-top: 50px;
-    padding-bottom: 20px;
-}
-
-/* Set padding to keep content from hitting the edges */
-.body-content {
-    padding: 15px;
-}
-
-.top-bottom-10 {
-    padding-top:10px;
-    padding-bottom:10px;
-}
-
-/* Override the default bootstrap behavior where horizontal description lists 
-   will truncate terms that are too long to fit in the left column 
-*/
-.dl-horizontal dt {
-    white-space: normal;
-}
-
-/* Set width on the form input elements since they're 100% wide by default */
-input,
-select,
-textarea {
-    max-width: 280px;
-}
-
-.btn-file {
-    position: relative;
-    overflow: hidden;
-}
-.btn-file input[type=file] {
-    position: absolute;
-    top: 0;
-    right: 0;
-    min-width: 100%;
-    min-height: 100%;
-    font-size: 100px;
-    text-align: right;
-    filter: alpha(opacity=0);
-    opacity: 0;
-    outline: none;
-    background: white;
-    cursor: inherit;
-    display: block;
-}
+﻿body { padding-bottom: 76px; }
+.em-one-point-four { font-size: 1.4em; }
+.em-two { font-size: 2em; }
+.em-four { font-size: 4em; }
+.align-top { vertical-align: top; }
+.margin-lr10 { margin: 0 10px; }
+.margin-tb10 { margin: 10px 0; }
+.center { text-align:center;}

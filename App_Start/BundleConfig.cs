@@ -25,6 +25,7 @@ namespace kuujinbo.StackOverflow.iTextSharp.MVC
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
+                      "~/Content/octicons/octicons.css",
                       "~/Content/site.css"));
         }
     }
