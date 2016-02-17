@@ -1,0 +1,59 @@
+﻿@{
+    ViewBag.Title = "Upload Multiple Images & Write to PDF";
+}
+
+<h1><a href='http://stackoverflow.com/questions/30385192'>http://stackoverflow.com/questions/30385192</a></h1>
+
+<h2>Image links</h2>
+<div id='wanted'>
+    <div>
+        <div>
+            Remote URL: <img src='http://stackoverflow.com/users/flair/604196.png'></img>
+        </div>
+        @*<div>Local URL: <img src='/content/kuujinbo_320-30.gif' /></div><div>Base64: <img src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO9TXL0Y4OHwAAAABJRU5ErkJggg==' /></div></div>*@
+    </div>
+</div>
+
+<div>
+    <button class='btn btn-success' id='button'>Get PDF</button>
+</div>
+
+@section scripts
+{
+    <script src="~/Scripts/ajax/FileSaver.js"></script>
+    <script src="~/Scripts/ajax/jquery.binarytransport.js"></script>
+    <script src="~/Scripts/ajax/jquery-binary.js"></script>
+    <script type="text/javascript">
+    $(function () {
+        $('#button').on('click', function () {
+            var html = $('#wanted').html();
+            var images = $(html).find('img');
+            for (i = 0; i < images.length; ++i) {
+                $(images[i]).replaceWith('<img src="' + $(this).attr('src') + '" />')
+            }
+            console.log(images[0]);
+
+            //    .replaceWith(function () {
+            //    var src = $(this).attr('src');
+            //    // console.log(src);
+            //    console.log('<img src="' + $(this).attr('src') + '" />');
+            //    return '<img src="' + $(this).attr('src') + '" />'
+            //});
+
+            console.log(html);
+
+            //$('.a-photo').replaceWith(function () {
+            //    var alt = $(this).attr('alt');
+            //    return "<div class='a-photo' style='background:url(" + alt + ") center no-repeat;></div>";
+            //});
+
+            $(this).downloadFile(
+                '@Url.Action("Index", "ImageHandler")',
+                { xHtml: html }
+                // { xHtml: JSON.stringify( $('#wanted').html() ) }
+                // { xHtml: $('#wanted').prop('outerHTML') }
+            );
+        });
+    });
+    </script>
+}

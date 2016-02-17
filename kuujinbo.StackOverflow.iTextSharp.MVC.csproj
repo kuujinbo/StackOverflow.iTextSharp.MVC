@@ -123,9 +123,11 @@
     <Compile Include="Controllers\OutputStreamNotAvailableController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\UploadMultipleImagesController.cs" />
+    <Compile Include="Controllers\XmlWorkers\ImageHandlerController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\ImageProvider.cs" />
     <Compile Include="Helpers\Pdf.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="WebForms\HtmlImageHandler.aspx.cs">
@@ -188,6 +190,7 @@
     <Content Include="Views\OutputStreamNotAvailable\Index.cshtml" />
     <Content Include="Views\UploadMultipleImages\Index.cshtml" />
     <Content Include="Views\DomToPdf\Index.cshtml" />
+    <Content Include="Views\ImageHandler\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
