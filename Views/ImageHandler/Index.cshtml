@@ -1,59 +1,99 @@
 ﻿@{
-    ViewBag.Title = "Upload Multiple Images & Write to PDF";
+    ViewBag.Title = "MVC Example";
 }
+@{string imgTag = "<img>";}
 
-<h1><a href='http://stackoverflow.com/questions/30385192'>http://stackoverflow.com/questions/30385192</a></h1>
-
-<h2>Image links</h2>
+<h1>Converting HTML with Images to PDF using iTextSharp</h1>
 <div id='wanted'>
-    <div>
-        <div>
-            Remote URL: <img src='http://stackoverflow.com/users/flair/604196.png'></img>
+    <div class='row'>
+        <div class='col-md-6'>
+            <h2>JavaScript DOM Manipulation</h2>
+            <ul data-bind='foreach: people'>
+                <li>
+                    Name [<span data-bind='text: $index'> </span>]:
+                    <span data-bind='text: name'> </span>
+                    <a href='#' data-bind='click: $parent.removePerson'>Remove</a>
+                </li>
+            </ul>
+            <h2>Hyperlinks on this Server</h2>
+            <div class='margin-tb10'>
+                <div><a href='/WebForms/HtmlImageHandler.aspx'>HTMLWorker Image Handler</a></div>
+                <div><a href='/UploadMultipleImages'>Upload Multiple Images</a></div>
+            </div>
         </div>
-        @*<div>Local URL: <img src='/content/kuujinbo_320-30.gif' /></div><div>Base64: <img src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO9TXL0Y4OHwAAAABJRU5ErkJggg==' /></div></div>*@
+        <div class='col-md-6'>
+            <h2>Images</h2>
+            <div class='margin-tb10'>
+                <div>
+                    Remote @imgTag URL: <img src='/images/alt-gravatar.png' />
+                </div>
+                <div>
+                    Remote @imgTag URL hyperlink:
+                    <a href='http://stackoverflow.com/users/604196/kuujinbo'><img src='http://stackoverflow.com/users/flair/604196.png' /></a>
+                </div>
+                <div>Relative @imgTag URL: <img src='./../../content/kuujinbo_320-30.gif' /></div>
+                <div>
+                    Base64 @imgTag:
+                    <img src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO9TXL0Y4OHwAAAABJRU5ErkJggg==' />
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
-<div>
-    <button class='btn btn-success' id='button'>Get PDF</button>
+<div class='center'>
+        <button class='btn btn-success' data-bind='click: addPerson'>Add a Person</button>
+        <button class='btn btn-success' data-bind='click: getPdf'>Get PDF</button>
+</div>
+
+
+<div class='center margin-tb10'>
+    <p>
+        <a href='/WebForms/XmlWorkers/ImageParser.aspx'
+           class='btn btn-primary btn-lg'>Go To Web Forms Example</a>
+    </p>
 </div>
 
 @section scripts
 {
+    <script src="~/Scripts/libs/knockout-3.4.0.js"></script>
     <script src="~/Scripts/ajax/FileSaver.js"></script>
     <script src="~/Scripts/ajax/jquery.binarytransport.js"></script>
     <script src="~/Scripts/ajax/jquery-binary.js"></script>
     <script type="text/javascript">
-    $(function () {
-        $('#button').on('click', function () {
-            var html = $('#wanted').html();
-            var images = $(html).find('img');
-            for (i = 0; i < images.length; ++i) {
-                $(images[i]).replaceWith('<img src="' + $(this).attr('src') + '" />')
+
+        function AppViewModel() {
+            var self = this;
+
+            self.getPdf = function (data, event) {
+                $(this).downloadFile(
+                    '@Url.Action("Index", "ImageHandler")',
+                    { xHtml: $('#wanted').html() }
+                );
             }
-            console.log(images[0]);
 
-            //    .replaceWith(function () {
-            //    var src = $(this).attr('src');
-            //    // console.log(src);
-            //    console.log('<img src="' + $(this).attr('src') + '" />');
-            //    return '<img src="' + $(this).attr('src') + '" />'
-            //});
+            self.people = ko.observableArray([
+                { name: 'Bert' },
+                { name: 'Charles' },
+                { name: 'Denise' }
+            ]);
+            self.addPerson = function () {
+                self.people.push({ name: "New person added at: " + new Date() });
+            };
+            self.removePerson = function () {
+                self.people.remove(this);
+            }
+        }
+        ko.applyBindings(new AppViewModel());
 
-            console.log(html);
 
-            //$('.a-photo').replaceWith(function () {
-            //    var alt = $(this).attr('alt');
-            //    return "<div class='a-photo' style='background:url(" + alt + ") center no-repeat;></div>";
-            //});
-
+    @*$(function () {
+        $('#button').on('click', function () {
             $(this).downloadFile(
                 '@Url.Action("Index", "ImageHandler")',
-                { xHtml: html }
-                // { xHtml: JSON.stringify( $('#wanted').html() ) }
-                // { xHtml: $('#wanted').prop('outerHTML') }
+                { xHtml: $('#wanted').html() }
             );
         });
-    });
+    });*@
     </script>
 }

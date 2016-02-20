@@ -7,10 +7,10 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace kuujinbo.StackOverflow.iTextSharp.MVC.WebForms {
+namespace kuujinbo.StackOverflow.iTextSharp.MVC.WebForms.XmlWorkers {
     
     
-    public partial class HtmlImageHandler {
+    public partial class ImageParser {
         
         /// <summary>
         /// ConvertControlToPdf control.

@@ -29,7 +29,7 @@ namespace kuujinbo.StackOverflow.iTextSharp.MVC.Controllers
                 throw new Exception("no files uploaded");
 
             var absoluteX = 20;
-            var absoluteY = absoluteX;
+            var absoluteY = 800;
             using (var stream = new MemoryStream())
             {
                 using (var stamper = new PdfStamper(Helpers.Pdf.GetTestReader(), stream))
@@ -51,10 +51,11 @@ namespace kuujinbo.StackOverflow.iTextSharp.MVC.Controllers
                             );
 
                             // image absolute position
-                            image.SetAbsolutePosition(absoluteX, absoluteY);
+                            image.SetAbsolutePosition(
+                                absoluteX, absoluteY - image.Height
+                            );
 
                             // scale image if needed
-                            image.ScaleToFit(pageOneSize);
                             // image.ScaleAbsolute(...);
 
                             // PAGE_NUMBER => add image to specific page number
@@ -64,7 +65,7 @@ namespace kuujinbo.StackOverflow.iTextSharp.MVC.Controllers
                         ++APPEND_NEW_PAGE_NUMBER;
                     }
                 }
-                return File(stream.ToArray(), "application/pdf");
+                return File(stream.ToArray(), "application/pdf", "test.pdf");
             }
         }
 

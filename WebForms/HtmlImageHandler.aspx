@@ -1,14 +1,8 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="false" CodeBehind="HtmlImageHandler.aspx.cs" Inherits="kuujinbo.StackOverflow.iTextSharp.MVC.WebForms.HtmlImageHandler" 
 %>
 
-<!DOCTYPE html>
-
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head runat="server">
-<title></title>
-</head>
-<body>
-<form id="form1" runat="server">
+<asp:content contentplaceholderid='webFormContent' runat='server'>
+<h1>HTMLWorker Image Handler</h1>
 <%--
     HtmlTable used for brevity - HTML conversion for a GridView is
     **EXACTLY** the same
@@ -26,12 +20,11 @@
 <tr><td>ROW 3: CELL 1</td>
 <td><img src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO9TXL0Y4OHwAAAABJRU5ErkJggg==' /></td></tr>
 </table>
-</div>
-<div class='tbm8'>
+
 <asp:Button runat='server'
-  oncommand='ProcessHtml'
-  text='Convert Html Control to PDF'
+    class='btn btn-primary margin-tb10'
+    oncommand='ProcessHtml'
+    text='Convert Html Control to PDF'
 />
-</form>
-</body>
-</html>
+
+</asp:content>

@@ -1,29 +1,23 @@
 ﻿@{
     ViewBag.Title = "Upload Multiple Images & Write to PDF";
 }
-
 <h2><a href='http://stackoverflow.com/questions/30385192'>http://stackoverflow.com/questions/30385192</a></h2>
 
 @using (Html.BeginForm("Index", "UploadMultipleImages",
     FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
-    <div class='top-bottom-10'>
-        <label for="file1">Image File:</label>
-        <span class="btn btn-info btn-file">
-            Browse <input type="file" name="files" id="file1" />
-        </span>
-    </div>
-    <div class='top-bottom-10'>
-        <label for="file2">Image File:</label>
-        <span class="btn btn-info btn-file">
-            Browse <input type="file" name="files" id="file2" />
-        </span>
+    <div class='margin-tb10'>
+        <div>
+            <span>
+                <input class="btn btn-info btn-file" type="file" name="files" id="file1" />
+            </span>
+        </div>
+        <div>
+            <span>
+                <input class="btn btn-info btn-file" type="file" name="files" id="file2" />
+            </span>
+        </div>
     </div>
 
     <input class="btn btn-primary" type="submit" value='Submit' />
-
-}
-
-@section scripts
-{
 }

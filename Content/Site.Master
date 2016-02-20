@@ -1,0 +1,21 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Site.master.cs" Inherits="kuujinbo.StackOverflow.iTextSharp.MVC.Content.Site" %>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <title></title>
+    <asp:ContentPlaceHolder ID="head" runat="server">
+        <%= System.Web.Optimization.Styles.Render("~/Content/css") %>
+    </asp:ContentPlaceHolder>
+</head>
+<body>
+<%= Application["NAV_MENU"].ToString() %>
+    <div class="container">
+    <form id="webForm" runat="server">
+        <asp:ContentPlaceHolder ID="webFormContent" runat="server" />
+    </form>
+    </div>
+    <%= System.Web.Optimization.Scripts.Render("~/bundles/jquery") %>
+    <%= System.Web.Optimization.Scripts.Render("~/bundles/jqueryval") %>
+    <%= System.Web.Optimization.Scripts.Render("~/bundles/bootstrap") %>
+</body>
+</html>

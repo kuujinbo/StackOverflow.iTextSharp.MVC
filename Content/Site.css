@@ -4,5 +4,5 @@
 .em-four { font-size: 4em; }
 .align-top { vertical-align: top; }
 .margin-lr10 { margin: 0 10px; }
-.margin-tb10 { margin: 10px 0; }
+.margin-tb10, div.margin-tb10 > div { margin: 10px 0; }
 .center { text-align:center;}
