@@ -128,9 +128,9 @@ publish/
 ## passwords
 #*.pubxml
 
-
 # NuGet Packages Directory
 src/packages/*
+src/.nuget
 ## TODO: If the tool you use requires repositories.config
 ## uncomment the next line
 #!packages/repositories.config
