@@ -5,6 +5,8 @@ VisualStudioVersion = 12.0.40629.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "kuujinbo.StackOverflow.iTextSharp.MVC", "kuujinbo.StackOverflow.iTextSharp.MVC.csproj", "{3770D45D-29A7-4B26-B8BB-F842CFF5EB0F}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{2155D5FB-204F-40B6-BB48-CEB7985B544B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +20,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{3770D45D-29A7-4B26-B8BB-F842CFF5EB0F} = {2155D5FB-204F-40B6-BB48-CEB7985B544B}
 	EndGlobalSection
 EndGlobal
