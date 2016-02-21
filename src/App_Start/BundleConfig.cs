@@ -15,8 +15,7 @@ namespace kuujinbo.StackOverflow.iTextSharp.MVC
                         "~/Scripts/libs/jquery.validate*"));
 
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
-                      "~/Scripts/libs/bootstrap.js",
-                      "~/Scripts/libs/respond.js"));
+                      "~/Scripts/libs/bootstrap.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
