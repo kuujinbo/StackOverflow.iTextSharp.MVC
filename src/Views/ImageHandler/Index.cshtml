@@ -1,0 +1,78 @@
+﻿@{
+    ViewBag.Title = "MVC Example";
+    }
+@{string imgTag = "<img>";}
+
+<h1>Converting HTML with Images and Hyperlinks to PDF using iTextSharp</h1>
+<div id='wanted'>
+    <div class='row'>
+        <div class='col-md-6'>
+            <h2>Hyperlinks</h2>
+            <div class='margin-tb4'>
+                <div><a href='/WebForms/HtmlImageHandler.aspx'>HTMLWorker Image Handler</a> (Local)</div>
+                <div><a href='https://www.google.com'>Google</a> (Remote)</div>
+            </div>
+            <h2>JavaScript DOM Manipulation</h2>
+            <ul data-bind='foreach: people'>
+                <li>
+                    Name [<span data-bind='text: $index'> </span>]:
+                    <span data-bind='text: name'> </span>
+                    <a href='#' data-bind='click: $parent.removePerson'>Remove</a>
+                </li>
+            </ul>
+        </div>
+        <div class='col-md-6'>
+            <h2>Images</h2>
+            <div class='margin-tb4'>
+                <div>
+                    Remote @imgTag URL hyperlink:
+                    <a href='http://stackoverflow.com/users/604196/kuujinbo'><img src='http://stackoverflow.com/users/flair/604196.png' /></a>
+                </div>
+                <div>Relative Local @imgTag URL: <img src='./../../content/kuujinbo_320-30.gif' /></div>
+                <div>
+                    Base64 @imgTag:
+                    <img src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO9TXL0Y4OHwAAAABJRU5ErkJggg==' />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class='margin-tb10'>
+    <button class='btn btn-primary pull-left' data-bind='click: addPerson'>Add a Person</button>
+    <button class='btn btn-primary pull-left margin-lr10' data-bind='click: getPdf'>Get PDF</button>
+    <span><a href='/WebForms/XmlWorkers/ImageParser.aspx' class='btn btn-primary pull-right'>Go To Web Forms Example</a></span>
+</div>
+
+@section scripts
+{
+    <script src="~/Scripts/libs/knockout-3.4.0.js"></script>
+    <script src="~/Scripts/ajax/FileSaver.js"></script>
+    <script src="~/Scripts/ajax/jquery.binarytransport.js"></script>
+    <script src="~/Scripts/ajax/jquery-binary.js"></script>
+    <script type="text/javascript">
+
+        function AppViewModel() {
+            var self = this;
+
+            self.getPdf = function (data, event) {
+                $(this).downloadFile(
+                    '@Url.Action("Index", "ImageHandler")',
+                    { xHtml: $('#wanted').html() }
+                );
+            }
+
+            self.people = ko.observableArray([
+                { name: 'John' },
+                { name: 'Jane' }
+            ]);
+            self.addPerson = function () {
+                self.people.push({ name: "New person added at: " + new Date() });
+            };
+            self.removePerson = function () {
+                self.people.remove(this);
+            }
+        }
+        ko.applyBindings(new AppViewModel());
+    </script>
+}
