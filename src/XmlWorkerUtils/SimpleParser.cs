@@ -58,9 +58,7 @@ namespace kuujinbo.StackOverflow.iTextSharp.MVC.XmlWorkerUtils
             {
                 using (Document document = new Document())
                 {
-                    PdfWriter writer = PdfWriter.GetInstance(
-                        document, stream
-                    );
+                    PdfWriter writer = PdfWriter.GetInstance(document, stream);
                     document.Open();
 
                     HtmlPipelineContext

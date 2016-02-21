@@ -53,7 +53,6 @@ namespace kuujinbo.StackOverflow.iTextSharp.MVC.XmlWorkerUtils
                 Match match;
                 if ((match = Base64.Match(src)).Length > 0)
                 {
-                    // return Image.GetInstance(new Uri(@"C:\Users\ko\Desktop\200x200.png").AbsoluteUri);
                     return ScaleImage(Image.GetInstance(
                         Convert.FromBase64String(match.Groups["data"].Value)
                     ));

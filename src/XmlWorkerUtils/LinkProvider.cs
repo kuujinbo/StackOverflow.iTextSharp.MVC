@@ -2,7 +2,7 @@
 
 namespace kuujinbo.StackOverflow.iTextSharp.MVC.XmlWorkerUtils
 {
-    // resolve hyperlinks with relative URLs, and make them absolute
+    // make hyperlinks with relative URLs absolute: [1] URL; [2] file URI file:///
     public class LinkProvider : ILinkProvider
     {
         private string _baseUrl;

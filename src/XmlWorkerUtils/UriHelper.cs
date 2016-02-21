@@ -23,24 +23,30 @@ namespace kuujinbo.StackOverflow.iTextSharp.MVC.XmlWorkerUtils
             BaseUri = CreateBase(baseUri);
         }
 
+        // get a URI for IImageProvider
         public string Join(string relativeUri)
         {
             if (_uriType == UriType.Local)
             {
                 return _httpContext != null
-                    ? _httpContext.Server.MapPath(new Uri(BaseUri, relativeUri).AbsolutePath)
+                    ? _httpContext.Server.MapPath(
+                        new Uri(BaseUri, relativeUri).AbsolutePath
+                    )
                     : new Uri(BaseUri, relativeUri).AbsolutePath;
             }
+            // a file URI - file:///
             return new Uri(BaseUri, relativeUri).AbsoluteUri;
         }
 
         private Uri CreateBase(string baseUrl)
         {
             if (string.IsNullOrEmpty(baseUrl) && _httpContext != null)
-            {
+            {   // running on a web server
                 var req = _httpContext.Request;
                 baseUrl = _uriType == UriType.Local
+                    // get from file system for IImageProvider
                     ? req.ApplicationPath
+                    // absolute URI for ILinkProvider
                     : req.Url.GetLeftPart(UriPartial.Authority)
                         + _httpContext.Request.ApplicationPath;
             }
@@ -48,7 +54,7 @@ namespace kuujinbo.StackOverflow.iTextSharp.MVC.XmlWorkerUtils
             Uri uri;
             if (Uri.TryCreate(baseUrl, UriKind.RelativeOrAbsolute, out uri)) return uri;
 
-            throw new ArgumentException("cannot create a valid baseUrl");
+            throw new InvalidOperationException("cannot create a valid BaseUri");
         }
 
     }
