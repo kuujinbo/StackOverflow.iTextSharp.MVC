@@ -22,19 +22,19 @@ namespace kuujinbo.StackOverflow.iTextSharp.MVC.Controllers.KnockoutJS
             Response.AppendHeader(
                 "Content-Disposition", "attachment; filename=test.pdf"
             );
-            using (var stringReader = new StringReader(xHtml))
-            {
-                using (Document document = new Document())
-                {
-                    PdfWriter writer = PdfWriter.GetInstance(
-                        document, Response.OutputStream
-                    );
-                    document.Open();
-                    XMLWorkerHelper.GetInstance().ParseXHtml(
-                      writer, document, stringReader
-                    );
-                }
-            }
+    using (var stringReader = new StringReader(xHtml))
+    {
+        using (Document document = new Document())
+        {
+            PdfWriter writer = PdfWriter.GetInstance(
+                document, Response.OutputStream
+            );
+            document.Open();
+            XMLWorkerHelper.GetInstance().ParseXHtml(
+                writer, document, stringReader
+            );
+        }
+    }
 
             return new EmptyResult();
         }

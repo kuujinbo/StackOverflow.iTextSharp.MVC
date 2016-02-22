@@ -1,54 +1,56 @@
 ﻿using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
 namespace kuujinbo.StackOverflow.iTextSharp.MVC.XmlWorkerUtils
 {
+    // resolve URIs for LinkProvider & ImageProvider
     public class UriHelper
     {
-        private HttpContext _httpContext;
-        private UriType _uriType;
-
-        public enum UriType { Local, Remote }
-
+        /* when running in web context:
+         * [1] give LinkProvider http[s] scheme; see CreateBase(string baseUrl)
+         * [2] give ImageProvider relative path starting with '/' - see:
+         *     Join(string relativeUri)
+         */
+        public bool IsLocal { get; set; }
+        public HttpContext HttpContext { get; private set; }
         public Uri BaseUri { get; private set; }
 
-        public UriHelper() : this(null, UriType.Local) { }
-        public UriHelper(UriType uriType) : this(null, uriType) { }
-        public UriHelper(string baseUri, UriType uriType)
+        public UriHelper(string baseUri) : this(baseUri, true) {}
+        public UriHelper(string baseUri, bool isLocal)
         {
-            _uriType = uriType;
-            _httpContext = HttpContext.Current;
+            IsLocal = isLocal;
+            HttpContext = HttpContext.Current;
             BaseUri = CreateBase(baseUri);
         }
 
-        // get a URI for IImageProvider
-        public string Join(string relativeUri)
+        // IImageProvider; get URI 
+        public string Combine(string relativeUri)
         {
-            if (_uriType == UriType.Local)
+            // web context; HTML from view or web form
+            if (HttpContext != null && IsLocal && !BaseUri.IsAbsoluteUri)
             {
-                return _httpContext != null
-                    ? _httpContext.Server.MapPath(
-                        new Uri(BaseUri, relativeUri).AbsolutePath
-                    )
-                    : new Uri(BaseUri, relativeUri).AbsolutePath;
+                return HttpContext.Server.MapPath(
+                    // Combine() checks directory traversal exploits
+                    VirtualPathUtility.Combine(BaseUri.ToString(), relativeUri)
+                );
             }
-            // a file URI - file:///
-            return new Uri(BaseUri, relativeUri).AbsoluteUri;
+            return Path.Combine(BaseUri.LocalPath, relativeUri);
         }
 
         private Uri CreateBase(string baseUrl)
         {
-            if (string.IsNullOrEmpty(baseUrl) && _httpContext != null)
-            {   // running on a web server
-                var req = _httpContext.Request;
-                baseUrl = _uriType == UriType.Local
-                    // get from file system for IImageProvider
+            if (HttpContext != null)
+            {   // running on a web server; need to update original value  
+                var req = HttpContext.Request;
+                baseUrl = IsLocal
+                    // IImageProvider; get local file system path
                     ? req.ApplicationPath
-                    // absolute URI for ILinkProvider
+                    // ILinkProvider needs absolute http[s] URI; 
                     : req.Url.GetLeftPart(UriPartial.Authority)
-                        + _httpContext.Request.ApplicationPath;
+                        + HttpContext.Request.ApplicationPath;
             }
 
             Uri uri;
@@ -56,6 +58,5 @@ namespace kuujinbo.StackOverflow.iTextSharp.MVC.XmlWorkerUtils
 
             throw new InvalidOperationException("cannot create a valid BaseUri");
         }
-
     }
 }

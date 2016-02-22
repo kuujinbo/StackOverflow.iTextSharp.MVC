@@ -7,6 +7,7 @@ using iTextSharp.tool.xml.pipeline.html;
 
 namespace kuujinbo.StackOverflow.iTextSharp.MVC.XmlWorkerUtils
 {
+    // create iTextSharp.text.Image
     public class ImageProvider : IImageProvider
     {
         private UriHelper _uriHelper;
@@ -17,17 +18,12 @@ namespace kuujinbo.StackOverflow.iTextSharp.MVC.XmlWorkerUtils
         public virtual float ScalePercent { get; set; }
         public virtual Regex Base64 { get; set; }
 
-        public ImageProvider(string baseUri)
-            : this(null, UriHelper.UriType.Local, 67f) { }
-
-        public ImageProvider(string baseUri, UriHelper.UriType uriType, 
-            float scalePercent)
+        public ImageProvider(string baseUri) : this(baseUri, 67f) { }
+        public ImageProvider(string baseUri, float scalePercent)
         {
-            _uriHelper = new UriHelper(baseUri, uriType);
+            _uriHelper = new UriHelper(baseUri);
             ScalePercent = scalePercent;
-
-            // rfc2045, section 6.8
-            Base64 = new Regex(
+            Base64 = new Regex( // rfc2045, section 6.8 (alphabet/padding)
                 @"^data:image/[^;]+;base64,(?<data>[a-z0-9+/]+={0,2})$",
                 RegexOptions.Compiled | RegexOptions.IgnoreCase
             );
@@ -58,7 +54,8 @@ namespace kuujinbo.StackOverflow.iTextSharp.MVC.XmlWorkerUtils
                     ));
                 }
 
-                return ScaleImage(Image.GetInstance(_uriHelper.Join(src)));
+                var imgPath = _uriHelper.Combine(src);
+                return ScaleImage(Image.GetInstance(imgPath));
             }
             catch (BadElementException ex) { return null; }
             catch (IOException ex) { return null; }

@@ -1,7 +1,5 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.Text.RegularExpressions;
-using System.Web;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
 using iTextSharp.tool.xml;
@@ -77,6 +75,4 @@ namespace kuujinbo.StackOverflow.iTextSharp.MVC.XmlWorkerUtils
             }
         }
     }
-
-
 }

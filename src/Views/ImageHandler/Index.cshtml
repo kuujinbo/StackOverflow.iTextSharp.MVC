@@ -28,7 +28,7 @@
                     Remote @imgTag URL hyperlink:
                     <a href='http://stackoverflow.com/users/604196/kuujinbo'><img src='http://stackoverflow.com/users/flair/604196.png' /></a>
                 </div>
-                <div>Relative Local @imgTag URL: <img src='./../../content/kuujinbo_320-30.gif' /></div>
+                <div>Relative Local @imgTag: <img src='/content/images/kuujinbo_320-30.gif' /></div>
                 <div>
                     Base64 @imgTag:
                     <img src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO9TXL0Y4OHwAAAABJRU5ErkJggg==' />
@@ -41,7 +41,7 @@
 <div class='margin-tb10'>
     <button class='btn btn-primary pull-left' data-bind='click: addPerson'>Add a Person</button>
     <button class='btn btn-primary pull-left margin-lr10' data-bind='click: getPdf'>Get PDF</button>
-    <span><a href='/WebForms/XmlWorkers/ImageParser.aspx' class='btn btn-primary pull-right'>Go To Web Forms Example</a></span>
+    <span><a href='/WebForms/XmlWorkers/ImageParser.aspx' class='btn btn-primary pull-right margin-lr10'>Go To Web Forms Example</a></span>
 </div>
 
 @section scripts
@@ -52,12 +52,11 @@
     <script src="~/Scripts/ajax/jquery-binary.js"></script>
     <script type="text/javascript">
 
-        function AppViewModel() {
-            var self = this;
-
-            self.getPdf = function (data, event) {
-                $(this).downloadFile(
-                    '@Url.Action("Index", "ImageHandler")',
+    function AppViewModel() {
+        var self = this;
+        self.getPdf = function (data, event) {
+            $(this).downloadFile(
+                '@Url.Action("Index", "ImageHandler")',
                     { xHtml: $('#wanted').html() }
                 );
             }

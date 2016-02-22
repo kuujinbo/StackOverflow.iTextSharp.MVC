@@ -10,10 +10,6 @@ namespace kuujinbo.StackOverflow.iTextSharp.MVC.Controllers.XmlWorkers
         // GET: ImageHandler
         public ActionResult Index()
         {
-            // throw new Exception(Request.Url.GetLeftPart(UriPartial.Authority));
-            //throw new Exception(Request.ApplicationPath);
-
-            
             return View();
         }
 
@@ -32,24 +28,3 @@ namespace kuujinbo.StackOverflow.iTextSharp.MVC.Controllers.XmlWorkers
         }
     }
 }
-
-
-//<div>Local URL: <img src='../content/kuujinbo_320-30.gif' /></div>
-/*
-xHtml = @"<div id='wanted'>
-                
-    <div>Remote URL: <img src='http://stackoverflow.com/users/flair/604196.png' /></div>
-    <div>Base64: <img src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO9TXL0Y4OHwAAAABJRU5ErkJggg==' /></div>
-    <div>Remote URL: <img src='http://stackoverflow.com/users/flair/604196.png' /></div>
-    <div>Base64: <img src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO9TXL0Y4OHwAAAABJRU5ErkJggg==' /></div>
-    <div>Remote URL: <img src='http://stackoverflow.com/users/flair/604196.png' /></div>
-    <div>Base64: <img src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO9TXL0Y4OHwAAAABJRU5ErkJggg==' /></div>
-    <div>Remote URL: <img src='http://stackoverflow.com/users/flair/604196.png' /></div>
-    <div>Base64: <img src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO9TXL0Y4OHwAAAABJRU5ErkJggg==' /></div>
-    <div>Remote URL: <img src='http://stackoverflow.com/users/flair/604196.png' /></div>
-    <div>Base64: <img src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO9TXL0Y4OHwAAAABJRU5ErkJggg==' /></div>
-    <div>Remote URL: <img src='http://stackoverflow.com/users/flair/604196.png' /></div>
-    <div>Base64: <img src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO9TXL0Y4OHwAAAABJRU5ErkJggg==' /></div>
-    </div>
-";
- */
