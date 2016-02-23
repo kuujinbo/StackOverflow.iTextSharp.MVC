@@ -70,8 +70,8 @@ namespace kuujinbo.StackOverflow.iTextSharp.MVC.XmlWorkerUtils
          *     resulting file size.
          * [2] the cache can also **potentially** save network IO if you're
          *     running the parser in a loop, since Image.GetInstance() creates
-         *     a WebRequest when an image resides on a remote server. file IO 
-         *     will always beat remote network IO.
+         *     a WebRequest when an image resides on a remote server. couldn't
+         *     find a CachePolicy in the source code
          */
         public virtual void Store(string src, Image img)
         {
