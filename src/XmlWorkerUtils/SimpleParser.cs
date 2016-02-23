@@ -11,6 +11,9 @@ using iTextSharp.tool.xml.pipeline.html;
 
 namespace kuujinbo.StackOverflow.iTextSharp.MVC.XmlWorkerUtils
 {
+    /* a simple parser that uses XMLWorker and XMLParser to handle converting 
+     * (most) images and hyperlinks internally
+     */
     public class SimpleParser
     {
         public virtual ILinkProvider LinkProvider { get; set; }
@@ -20,13 +23,19 @@ namespace kuujinbo.StackOverflow.iTextSharp.MVC.XmlWorkerUtils
         public virtual ITagProcessorFactory TagProcessorFactory { get; set; }
         public virtual ICSSResolver CssResolver { get; set; }
 
+        /* overloads simplfied to keep SO answer (relatively) short. if needed
+         * set LinkProvider/ImageProvider after instantiating SimpleParser()
+         * to override the defaults (e.g. ImageProvider.ScalePercent)
+         */
         public SimpleParser() : this(null) { }
-        public SimpleParser(string baseUrl)
+        public SimpleParser(string baseUri)
         {
-            LinkProvider = new LinkProvider(baseUrl);
-            ImageProvider = new ImageProvider(baseUrl);
-
+            LinkProvider = new LinkProvider(new UriHelper(baseUri, false));
+            ImageProvider = new ImageProvider(new UriHelper(baseUri, true));
+            
             HtmlPipelineContext = new HtmlPipelineContext(null);
+
+            // another story altogether, and not implemented for simplicity 
             TagProcessorFactory = Tags.GetHtmlTagProcessorFactory();
             CssResolver = XMLWorkerHelper.GetInstance().GetDefaultCssResolver(true);
         }

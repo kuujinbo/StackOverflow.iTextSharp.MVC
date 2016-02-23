@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 using iTextSharp.tool.xml.pipeline.html;
 
 namespace kuujinbo.StackOverflow.iTextSharp.MVC.XmlWorkerUtils
@@ -11,20 +10,17 @@ namespace kuujinbo.StackOverflow.iTextSharp.MVC.XmlWorkerUtils
         public const char SEPARATOR = '/';
         public string BaseUrl { get; private set; }
 
-        public LinkProvider(string baseUrl)
+        public LinkProvider(UriHelper uriHelper)
         {
-            var uri = new UriHelper(baseUrl, false).BaseUri;
-            if (uri.Scheme == Uri.UriSchemeHttp || uri.Scheme == Uri.UriSchemeHttps)
-            {
-                BaseUrl = new UriHelper(baseUrl, false).BaseUri.AbsoluteUri;
-                // web context always http[s]    ^^^^^ Uri.Scheme 
-            }
-            else if (uri.Scheme == Uri.UriSchemeFile) 
-            {
-                // Uri class needs trailing separator or things break
-                BaseUrl = uri.AbsoluteUri.TrimEnd(SEPARATOR) + SEPARATOR;
-            }
-            else { BaseUrl = baseUrl; }
+            var uri = uriHelper.BaseUri;
+            /* simplified implementation that only takes into account:
+             * Uri.UriSchemeFile || Uri.UriSchemeHttp || Uri.UriSchemeHttps
+             */
+            BaseUrl = uri.Scheme == Uri.UriSchemeFile
+                // need trailing separator or file paths break
+                ? uri.AbsoluteUri.TrimEnd(SEPARATOR) + SEPARATOR
+                // assumes Uri.UriSchemeHttp || Uri.UriSchemeHttps
+                : BaseUrl = uri.AbsoluteUri;
         }
 
         public string GetLinkRoot()

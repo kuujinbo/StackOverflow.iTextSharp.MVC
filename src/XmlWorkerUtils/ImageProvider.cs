@@ -7,7 +7,7 @@ using iTextSharp.tool.xml.pipeline.html;
 
 namespace kuujinbo.StackOverflow.iTextSharp.MVC.XmlWorkerUtils
 {
-    // create iTextSharp.text.Image
+    // handle <img> elements in HTML  
     public class ImageProvider : IImageProvider
     {
         private UriHelper _uriHelper;
@@ -18,10 +18,10 @@ namespace kuujinbo.StackOverflow.iTextSharp.MVC.XmlWorkerUtils
         public virtual float ScalePercent { get; set; }
         public virtual Regex Base64 { get; set; }
 
-        public ImageProvider(string baseUri) : this(baseUri, 67f) { }
-        public ImageProvider(string baseUri, float scalePercent)
+        public ImageProvider(UriHelper uriHelper) : this(uriHelper, 67f) { }
+        public ImageProvider(UriHelper uriHelper, float scalePercent)
         {
-            _uriHelper = new UriHelper(baseUri);
+            _uriHelper = uriHelper;
             ScalePercent = scalePercent;
             Base64 = new Regex( // rfc2045, section 6.8 (alphabet/padding)
                 @"^data:image/[^;]+;base64,(?<data>[a-z0-9+/]+={0,2})$",
@@ -57,23 +57,36 @@ namespace kuujinbo.StackOverflow.iTextSharp.MVC.XmlWorkerUtils
                 var imgPath = _uriHelper.Combine(src);
                 return ScaleImage(Image.GetInstance(imgPath));
             }
+            // not implemented to keep the SO answer (relatively) short
             catch (BadElementException ex) { return null; }
             catch (IOException ex) { return null; }
             catch (Exception ex) { return null; }
         }
 
         /*
-         * always called after Retrieve(string src): cache any duplicate <img>
-         * in the HTML source so the iTextSharp.text.Image bytes are only 
-         * written to the PDF **once**, which reduces the resulting file size.
+         * always called after Retrieve(string src):
+         * [1] cache any duplicate <img> in the HTML source so the image bytes
+         *     are only written to the PDF **once**, which reduces the 
+         *     resulting file size.
+         * [2] the cache can also **potentially** save network IO if you're
+         *     running the parser in a loop, since Image.GetInstance() creates
+         *     a WebRequest when an image resides on a remote server. file IO 
+         *     will always beat remote network IO.
          */
         public virtual void Store(string src, Image img)
         {
             if (!_imageCache.ContainsKey(src)) _imageCache.Add(src, img);
         }
 
-
-        // no need to provide concrete implementations
+        /* XMLWorker documentation for ImageProvider recommends implementing
+         * GetImageRootPath():
+         * 
+         * http://demo.itextsupport.com/xmlworker/itextdoc/flatsite.html#itextdoc-menu-10
+         * 
+         * but a quick run through the debugger never hits the breakpoint, so 
+         * not sure if I'm missing something, or something has changed internally 
+         * with XMLWorker....
+         */
         public virtual string GetImageRootPath() { return null; }
         public virtual void Reset() { }
     }

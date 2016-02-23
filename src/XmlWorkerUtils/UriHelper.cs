@@ -9,8 +9,8 @@ namespace kuujinbo.StackOverflow.iTextSharp.MVC.XmlWorkerUtils
     // resolve URIs for LinkProvider & ImageProvider
     public class UriHelper
     {
-        /* when running in web context:
-         * [1] give LinkProvider http[s] scheme; see CreateBase(string baseUrl)
+        /* IsLocal; when running in web context:
+         * [1] give LinkProvider http[s] scheme; see CreateBase(string baseUri)
          * [2] give ImageProvider relative path starting with '/' - see:
          *     Join(string relativeUri)
          */
@@ -26,35 +26,44 @@ namespace kuujinbo.StackOverflow.iTextSharp.MVC.XmlWorkerUtils
             BaseUri = CreateBase(baseUri);
         }
 
-        // IImageProvider; get URI 
+        /* get URI for IImageProvider to instantiate iTextSharp.text.Image for 
+         * each <img> element in the HTML.
+         */
         public string Combine(string relativeUri)
         {
-            // web context; HTML from view or web form
-            if (HttpContext != null && IsLocal && !BaseUri.IsAbsoluteUri)
+            /* when running in a web context, the HTML is coming from a MVC view 
+             * or web form, so convert the incoming URI to a **local** path
+             */
+            if (HttpContext != null && !BaseUri.IsAbsoluteUri && IsLocal)
             {
                 return HttpContext.Server.MapPath(
                     // Combine() checks directory traversal exploits
                     VirtualPathUtility.Combine(BaseUri.ToString(), relativeUri)
                 );
             }
-            return Path.Combine(BaseUri.LocalPath, relativeUri);
+            return BaseUri.Scheme == Uri.UriSchemeFile 
+                ? Path.Combine(BaseUri.LocalPath, relativeUri)
+                // for this example we're assuming URI.Scheme is http[s]
+                : new Uri(BaseUri, relativeUri).AbsoluteUri;
         }
 
-        private Uri CreateBase(string baseUrl)
+        private Uri CreateBase(string baseUri)
         {
             if (HttpContext != null)
             {   // running on a web server; need to update original value  
                 var req = HttpContext.Request;
-                baseUrl = IsLocal
-                    // IImageProvider; get local file system path
+                baseUri = IsLocal
+                    // IImageProvider; absolute virtual path (starts with '/')
+                    // used to convert to local file system path. see:
+                    // Combine(string relativeUri)
                     ? req.ApplicationPath
-                    // ILinkProvider needs absolute http[s] URI; 
+                    // ILinkProvider; absolute http[s] URI scheme
                     : req.Url.GetLeftPart(UriPartial.Authority)
                         + HttpContext.Request.ApplicationPath;
             }
 
             Uri uri;
-            if (Uri.TryCreate(baseUrl, UriKind.RelativeOrAbsolute, out uri)) return uri;
+            if (Uri.TryCreate(baseUri, UriKind.RelativeOrAbsolute, out uri)) return uri;
 
             throw new InvalidOperationException("cannot create a valid BaseUri");
         }

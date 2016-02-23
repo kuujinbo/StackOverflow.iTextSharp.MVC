@@ -12,7 +12,7 @@ namespace kuujinbo.StackOverflow.iTextSharp.MVC.WebForms.XmlWorkers
         protected void ProcessHtml(object sender, CommandEventArgs e)
         {
             Response.ContentType = "application/pdf";
-            Response.AppendHeader("Content-Disposition", "attachment; filename=table.pdf");
+            Response.AppendHeader("Content-Disposition", "attachment; filename=test.pdf");
             using (var stringWriter = new StringWriter())
             {
                 using (var htmlWriter = new HtmlTextWriter(stringWriter))
