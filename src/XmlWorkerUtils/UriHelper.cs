@@ -12,7 +12,7 @@ namespace kuujinbo.StackOverflow.iTextSharp.MVC.XmlWorkerUtils
         /* IsLocal; when running in web context:
          * [1] give LinkProvider http[s] scheme; see CreateBase(string baseUri)
          * [2] give ImageProvider relative path starting with '/' - see:
-         *     Join(string relativeUri)
+         *     Combine(string relativeUri)
          */
         public bool IsLocal { get; set; }
         public HttpContext HttpContext { get; private set; }

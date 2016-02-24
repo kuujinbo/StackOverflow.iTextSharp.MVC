@@ -19,6 +19,8 @@ namespace kuujinbo.StackOverflow.iTextSharp.MVC.XmlWorkerUtils
         public virtual Regex Base64 { get; set; }
 
         public ImageProvider(UriHelper uriHelper) : this(uriHelper, 67f) { }
+        //              hard-coded based on general past experience ^^^
+        // but call the overload to supply your own
         public ImageProvider(UriHelper uriHelper, float scalePercent)
         {
             _uriHelper = uriHelper;
