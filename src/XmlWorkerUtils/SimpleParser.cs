@@ -1,4 +1,6 @@
-﻿using System.IO;
+﻿using System.Collections;
+using System.Collections.Generic;
+using System.IO;
 using System.Text.RegularExpressions;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
@@ -11,33 +13,21 @@ using iTextSharp.tool.xml.pipeline.html;
 
 namespace kuujinbo.StackOverflow.iTextSharp.MVC.XmlWorkerUtils
 {
-    /* a simple parser that uses XMLWorker and XMLParser to handle converting 
-     * (most) images and hyperlinks internally
-     */
     public class SimpleParser
     {
+        public virtual HtmlPipelineContext HtmlPipelineContext { get; set; }
         public virtual ILinkProvider LinkProvider { get; set; }
         public virtual IImageProvider ImageProvider { get; set; }
-        
-        public virtual HtmlPipelineContext HtmlPipelineContext { get; set; }
         public virtual ITagProcessorFactory TagProcessorFactory { get; set; }
+        public virtual IDictionary<AbstractTagProcessor, string[]> TagProcessors { get; set; }
         public virtual ICSSResolver CssResolver { get; set; }
 
-        /* overloads simplfied to keep SO answer (relatively) short. if needed
-         * set LinkProvider/ImageProvider after instantiating SimpleParser()
-         * to override the defaults (e.g. ImageProvider.ScalePercent)
-         */
+
         public SimpleParser() : this(null) { }
         public SimpleParser(string baseUri)
         {
             LinkProvider = new LinkProvider(new UriHelper(baseUri, false));
             ImageProvider = new ImageProvider(new UriHelper(baseUri, true));
-            
-            HtmlPipelineContext = new HtmlPipelineContext(null);
-
-            // another story altogether, and not implemented for simplicity 
-            TagProcessorFactory = Tags.GetHtmlTagProcessorFactory();
-            CssResolver = XMLWorkerHelper.GetInstance().GetDefaultCssResolver(true);
         }
 
         /*
@@ -57,10 +47,29 @@ namespace kuujinbo.StackOverflow.iTextSharp.MVC.XmlWorkerUtils
             );
         }
 
+        private void InitParser()
+        {
+            HtmlPipelineContext = HtmlPipelineContext ?? new HtmlPipelineContext(null);
+            LinkProvider = LinkProvider ?? new LinkProvider(new UriHelper(null, false));
+            ImageProvider = ImageProvider ?? new ImageProvider(new UriHelper(null, true));
+            CssResolver = CssResolver ?? XMLWorkerHelper.GetInstance().GetDefaultCssResolver(true);
+            TagProcessorFactory = TagProcessorFactory ?? Tags.GetHtmlTagProcessorFactory();
+            if (TagProcessors != null)
+            {
+                foreach (var processor in TagProcessors)
+                {
+                    TagProcessorFactory.AddProcessor(
+                        processor.Key, processor.Value
+                    );
+                }
+            }
+        }
+
         public virtual void Parse(Stream stream, string xHtml)
         {
             xHtml = SimpleAjaxImgFix(xHtml);
 
+            InitParser();
             using (var stringReader = new StringReader(xHtml))
             {
                 using (Document document = new Document())
@@ -69,7 +78,7 @@ namespace kuujinbo.StackOverflow.iTextSharp.MVC.XmlWorkerUtils
                     document.Open();
 
                     HtmlPipelineContext
-                        .SetTagFactory(Tags.GetHtmlTagProcessorFactory())
+                        .SetTagFactory(TagProcessorFactory)
                         .SetLinkProvider(LinkProvider)
                         .SetImageProvider(ImageProvider)
                     ;
