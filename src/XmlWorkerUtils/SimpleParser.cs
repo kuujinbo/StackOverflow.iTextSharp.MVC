@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
 using iTextSharp.text;
@@ -21,7 +20,6 @@ namespace kuujinbo.StackOverflow.iTextSharp.MVC.XmlWorkerUtils
         public virtual ITagProcessorFactory TagProcessorFactory { get; set; }
         public virtual IDictionary<AbstractTagProcessor, string[]> TagProcessors { get; set; }
         public virtual ICSSResolver CssResolver { get; set; }
-
 
         public SimpleParser() : this(null) { }
         public SimpleParser(string baseUri)
