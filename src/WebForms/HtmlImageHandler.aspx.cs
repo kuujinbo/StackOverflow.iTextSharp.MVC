@@ -22,8 +22,9 @@ namespace kuujinbo.StackOverflow.iTextSharp.MVC.WebForms
         {
             Response.ContentType = "application/pdf";
             Response.AppendHeader("Content-Disposition", "attachment; filename=table.pdf");
-            using (Document document = new Document())
-            {
+            //using (Document document = new Document())
+            Document document = new Document();
+            //{
                 PdfWriter.GetInstance(document, Response.OutputStream);
                 document.Open();
 
@@ -57,7 +58,8 @@ namespace kuujinbo.StackOverflow.iTextSharp.MVC.WebForms
                         document.Add(element);
                     }
                 }
-            }
+                Response.Write(document);
+            // }
             Response.End();
         }
 

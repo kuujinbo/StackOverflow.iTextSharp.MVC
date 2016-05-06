@@ -2,64 +2,101 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
+using System.Web;
 using iTextSharp.text;
 using iTextSharp.tool.xml.pipeline.html;
 
 namespace kuujinbo.StackOverflow.iTextSharp.MVC.XmlWorkerUtils
 {
-    // handle <img> elements in HTML  
     public class ImageProvider : IImageProvider
     {
-        private UriHelper _uriHelper;
-        // see Store(string src, Image img)
-        private Dictionary<string, Image> _imageCache = 
-            new Dictionary<string, Image>();
+        private Uri _uri;
+        public List<string> SkippedImages = new List<string>();
+
+        /// <summary>
+        /// see Store(string src, Image img) 
+        /// </summary>
+        private Dictionary<string, Image> _imageCache = new Dictionary<string, Image>();
 
         public virtual float ScalePercent { get; set; }
-        public virtual Regex Base64 { get; set; }
 
-        public ImageProvider(UriHelper uriHelper) : this(uriHelper, 67f) { }
-        //              hard-coded based on general past experience ^^^
-        // but call the overload to supply your own
-        public ImageProvider(UriHelper uriHelper, float scalePercent)
+        public ImageProvider(string baseUri) : this(baseUri, 67f) { }
+        public ImageProvider(string baseUri, float scalePercent)
         {
-            _uriHelper = uriHelper;
             ScalePercent = scalePercent;
-            Base64 = new Regex( // rfc2045, section 6.8 (alphabet/padding)
-                @"^data:image/[^;]+;base64,(?<data>[a-z0-9+/]+={0,2})$",
-                RegexOptions.Compiled | RegexOptions.IgnoreCase
-            );
+            if (!UriValidator.CreateBase(baseUri, false, out _uri))
+                throw new InvalidOperationException(UriValidator.INVALID_BASEURI);
         }
-        
-        public virtual Image ScaleImage(Image img)
+
+        private string Combine(string relativeUri)
         {
-            img.ScalePercent(ScalePercent);
-            return img;
+            // convert URI to **local** path when running in web context
+            HttpContext HttpContext = HttpContext.Current;
+            if (HttpContext != null && !_uri.IsAbsoluteUri)
+            {
+                return HttpContext.Server.MapPath(
+                    // Combine() checks directory traversal exploits
+                    VirtualPathUtility.Combine(_uri.ToString(), relativeUri)
+                );
+            }
+            else if (_uri.Scheme == Uri.UriSchemeFile)
+            {
+                return Path.Combine(_uri.LocalPath, relativeUri);
+            }
+            else if (UriValidator.IsWebUrl(_uri))
+            {
+                return new Uri(_uri, relativeUri).AbsoluteUri;
+            }
+
+            throw new InvalidOperationException(UriValidator.NOT_ABSOLUTE_URI);
+        }
+
+        private Image ScaleImage(Image image)
+        {
+            image.ScalePercent(ScalePercent);
+            return image;
         }
 
         public virtual Image Retrieve(string src)
         {
-            if (_imageCache.ContainsKey(src)) return _imageCache[src];
+            if (_imageCache.ContainsKey(src))
+            {
+                return _imageCache[src];
+            }
 
             try
             {
+                Uri uri;
+                Match match;
                 if (Regex.IsMatch(src, "^https?://", RegexOptions.IgnoreCase))
                 {
-                    return ScaleImage(Image.GetInstance(src));
+                    if (UriValidator.CreateAbsolute(src, out uri)
+                        && !UriValidator.PrivateTLDs.IsMatch(uri.Host))
+                    {
+                        return ScaleImage(Image.GetInstance(src));
+                    }
                 }
-
-                Match match;
-                if ((match = Base64.Match(src)).Length > 0)
+                else if ((match = UriValidator.Base64.Match(src)).Length > 0)
                 {
                     return ScaleImage(Image.GetInstance(
-                        Convert.FromBase64String(match.Groups["data"].Value)
+                        Convert.FromBase64String(
+                            match.Groups[UriValidator.BASE64_MATCH_GROUP].Value
+                        )
                     ));
                 }
+                else
+                {
+                    var imgPath = Combine(src);
+                    if (UriValidator.CreateAbsolute(imgPath, out uri)
+                        && uri.Scheme == Uri.UriSchemeFile)
+                    {
+                        return ScaleImage(Image.GetInstance(imgPath));
+                    }
+                }
 
-                var imgPath = _uriHelper.Combine(src);
-                return ScaleImage(Image.GetInstance(imgPath));
+                SkippedImages.Add(src);
+                return null;
             }
-            // not implemented to keep the SO answer (relatively) short
             catch (BadElementException ex) { return null; }
             catch (IOException ex) { return null; }
             catch (Exception ex) { return null; }
@@ -77,7 +114,10 @@ namespace kuujinbo.StackOverflow.iTextSharp.MVC.XmlWorkerUtils
          */
         public virtual void Store(string src, Image img)
         {
-            if (!_imageCache.ContainsKey(src)) _imageCache.Add(src, img);
+            if (!SkippedImages.Contains(src) && !_imageCache.ContainsKey(src))
+            {
+                _imageCache.Add(src, img);
+            }
         }
 
         /* XMLWorker documentation for ImageProvider recommends implementing
@@ -89,6 +129,7 @@ namespace kuujinbo.StackOverflow.iTextSharp.MVC.XmlWorkerUtils
          * not sure if I'm missing something, or something has changed internally 
          * with XMLWorker....
          */
+        // public virtual string GetImageRootPath() { throw new Exception("WTF"); }
         public virtual string GetImageRootPath() { return null; }
         public virtual void Reset() { }
     }

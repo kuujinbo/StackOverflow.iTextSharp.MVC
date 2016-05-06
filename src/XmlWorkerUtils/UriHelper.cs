@@ -6,8 +6,15 @@ using System.Web;
 
 namespace kuujinbo.StackOverflow.iTextSharp.MVC.XmlWorkerUtils
 {
+    public interface IUriHelper
+    {
+        Uri CreateBase(string baseUri);
+        string Combine(string relativeUri);
+        Uri BaseUri { get; }
+    }
+
     // resolve URIs for LinkProvider & ImageProvider
-    public class UriHelper
+    public class UriHelper : IUriHelper
     {
         /* IsLocal; when running in web context:
          * [1] give LinkProvider http[s] scheme; see CreateBase(string baseUri)
@@ -34,7 +41,7 @@ namespace kuujinbo.StackOverflow.iTextSharp.MVC.XmlWorkerUtils
             /* when running in a web context, the HTML is coming from a MVC view 
              * or web form, so convert the incoming URI to a **local** path
              */
-            if (HttpContext != null && !BaseUri.IsAbsoluteUri && IsLocal)
+            if (IsLocal && HttpContext != null && !BaseUri.IsAbsoluteUri)
             {
                 return HttpContext.Server.MapPath(
                     // Combine() checks directory traversal exploits
@@ -47,9 +54,9 @@ namespace kuujinbo.StackOverflow.iTextSharp.MVC.XmlWorkerUtils
                 : new Uri(BaseUri, relativeUri).AbsoluteUri;
         }
 
-        private Uri CreateBase(string baseUri)
+        public Uri CreateBase(string baseUri)
         {
-            if (HttpContext != null)
+            if (string.IsNullOrEmpty(baseUri) && HttpContext != null)
             {   // running on a web server; need to update original value  
                 var req = HttpContext.Request;
                 baseUri = IsLocal

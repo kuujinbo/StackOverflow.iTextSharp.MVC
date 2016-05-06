@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Web;
 using iTextSharp.tool.xml.pipeline.html;
 
 namespace kuujinbo.StackOverflow.iTextSharp.MVC.XmlWorkerUtils
@@ -8,24 +9,34 @@ namespace kuujinbo.StackOverflow.iTextSharp.MVC.XmlWorkerUtils
     {
         // rfc1738 - file URI scheme section 3.10
         public const char SEPARATOR = '/';
-        public string BaseUrl { get; private set; }
 
-        public LinkProvider(UriHelper uriHelper)
+        private Uri _uri;
+        private string _baseUri;
+
+        public LinkProvider() : this(null) { }
+        public LinkProvider(string baseUri)
         {
-            var uri = uriHelper.BaseUri;
-            /* simplified implementation that only takes into account:
-             * Uri.UriSchemeFile || Uri.UriSchemeHttp || Uri.UriSchemeHttps
-             */
-            BaseUrl = uri.Scheme == Uri.UriSchemeFile
-                // need trailing separator or file paths break
-                ? uri.AbsoluteUri.TrimEnd(SEPARATOR) + SEPARATOR
-                // assumes Uri.UriSchemeHttp || Uri.UriSchemeHttps
-                : BaseUrl = uri.AbsoluteUri;
+            if (!UriValidator.CreateBase(baseUri, true, out _uri))
+                throw new InvalidOperationException(UriValidator.NOT_ABSOLUTE_URI);
+
+            // need trailing separator or file paths break
+            if (_uri.Scheme == Uri.UriSchemeFile)
+            {
+                _baseUri = _uri.AbsoluteUri.TrimEnd(SEPARATOR) + SEPARATOR;
+            }
+            else if (UriValidator.IsWebUrl(_uri))
+            {
+                _baseUri = _uri.AbsoluteUri;
+            }
+            else
+            {
+                throw new InvalidOperationException(UriValidator.SUPPORTED_SCHEMES);
+            }
         }
 
         public string GetLinkRoot()
         {
-            return BaseUrl;
+            return _baseUri;
         }
     }
 }

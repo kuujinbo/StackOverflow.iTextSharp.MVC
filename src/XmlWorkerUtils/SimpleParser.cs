@@ -23,20 +23,28 @@ namespace kuujinbo.StackOverflow.iTextSharp.MVC.XmlWorkerUtils
 
         // for .NET 2.0
         public delegate TResult Func<T, TResult>(T arg);
-        public IEnumerable<Func<string, string>> XhtmlCleaner { get; set; }
+        public Func<string, string> XhtmlCleaner { get; set; }
 
         public SimpleParser() : this(null) { }
         public SimpleParser(string baseUri)
+            : this(
+                new LinkProvider(baseUri),
+                new ImageProvider(baseUri)
+                ) { }
+        public SimpleParser(
+            ILinkProvider linkProvider, IImageProvider imageProvider)
         {
-            LinkProvider = new LinkProvider(new UriHelper(baseUri, false));
-            ImageProvider = new ImageProvider(new UriHelper(baseUri, true));
+            LinkProvider = linkProvider;
+            ImageProvider = imageProvider;
         }
 
         public virtual void Parse(Stream stream, string xHtml)
         {
-            xHtml = CleanXhtml(xHtml);
-
+            xHtml = XhtmlCleaner != null
+                ? XhtmlCleaner(xHtml)
+                : XhtmlHelper.CloseSimpleTags(xHtml);
             InitParser();
+
             using (var stringReader = new StringReader(xHtml))
             {
                 using (Document document = new Document())
@@ -60,30 +68,16 @@ namespace kuujinbo.StackOverflow.iTextSharp.MVC.XmlWorkerUtils
             }
         }
 
-        public virtual string CloseSimpleTags(string xHtml)
-        {
-            return Regex.Replace(
-                xHtml,
-                "(?<selfClose><(?:img|br|hr)[^>]*)(?<=[^/])>",
-                new MatchEvaluator(match => match.Groups["selfClose"].Value + " />"),
-                RegexOptions.IgnoreCase | RegexOptions.Multiline
-            );
-        }
-
-        private string CleanXhtml(string xHtml)
-        {
-            XhtmlCleaner = XhtmlCleaner ?? new List<Func<string, string>>() { CloseSimpleTags };
-            foreach (var func in XhtmlCleaner) xHtml = func(xHtml);
-
-            return xHtml;
-        }
-
+        /// <summary>
+        /// initialize the parser
+        /// </summary>
         private void InitParser()
         {
             HtmlPipelineContext = HtmlPipelineContext ?? new HtmlPipelineContext(null);
-            LinkProvider = LinkProvider ?? new LinkProvider(new UriHelper(null, false));
-            ImageProvider = ImageProvider ?? new ImageProvider(new UriHelper(null, true));
+            LinkProvider = LinkProvider ?? new LinkProvider(null);
+            ImageProvider = ImageProvider ?? new ImageProvider(null);
             CssResolver = CssResolver ?? XMLWorkerHelper.GetInstance().GetDefaultCssResolver(true);
+
             TagProcessorFactory = TagProcessorFactory ?? Tags.GetHtmlTagProcessorFactory();
             if (TagProcessors != null)
             {
