@@ -62,12 +62,24 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http.Formatting, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.3\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Web.Http, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.2.3\lib\net45\System.Web.Http.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.Http.WebHost, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.WebHost.5.2.3\lib\net45\System.Web.Http.WebHost.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Extensions" />
@@ -121,6 +133,7 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Content\Site.Master.cs">
       <DependentUpon>Site.Master</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -131,6 +144,7 @@
     <Compile Include="Controllers\KnockoutJS\DomToPdfController.cs" />
     <Compile Include="Controllers\OutputStreamNotAvailableController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\PdfAjaxController.cs" />
     <Compile Include="Controllers\UploadMultipleImagesController.cs" />
     <Compile Include="Controllers\XmlWorkers\ImageHandlerController.cs" />
     <Compile Include="Global.asax.cs">
@@ -182,13 +196,9 @@
     <Content Include="Scripts\ajax\FileSaver.js" />
     <Content Include="Scripts\ajax\jquery-binary.js" />
     <Content Include="Scripts\ajax\jquery.binarytransport.js" />
-    <Content Include="Scripts\libs\jquery-2.2.1.js" />
-    <Content Include="Scripts\libs\jquery-2.2.1.min.js" />
     <Content Include="Scripts\libs\knockout-3.4.0.js" />
     <Content Include="WebForms\XmlWorkers\ImageParser.aspx" />
     <Content Include="Content\Site.Master" />
-    <Content Include="Scripts\libs\jquery-2.2.1.min.map" />
-    <None Include="Scripts\libs\jquery-2.2.0.intellisense.js" />
     <Content Include="Scripts\libs\bootstrap.js" />
     <Content Include="Scripts\libs\bootstrap.min.js" />
     <None Include="Scripts\libs\jquery.validate-vsdoc.js" />
@@ -200,7 +210,9 @@
     <Content Include="Scripts\libs\respond.matchmedia.addListener.min.js" />
     <Content Include="Scripts\libs\respond.min.js" />
     <Content Include="Scripts\_references.js" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
@@ -223,6 +235,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Models\" />
+    <Folder Include="Views\PdfAjax\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config">

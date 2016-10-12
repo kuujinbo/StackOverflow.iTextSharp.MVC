@@ -14,15 +14,35 @@
 </div>
 
 
+<h2>WebAPI PDF Ajax Download</h2>
+<button id='btnViewList' class='btn btn-primary'>WebAPI GET</button>
+
+@section scripts
+{
+@* [1] https://github.com/eligrey/FileSaver.js *@
+<script src='~/Scripts/ajax/FileSaver.js'></script>
+@* [2] https://github.com/henrya/js-jquery/tree/master/BinaryTransport *@
+<script src='~/Scripts/ajax/jquery.binarytransport.js'></script>
+@** [3] a simple jQuery plugin helper *@
+<script src="~/Scripts/ajax/jquery-binary.js"></script>
+<script type='text/javascript'>
+$('#btnViewList').click(function () {
+    $(this).downloadFile('/api/PdfAjax', null, 'GET');
+
+    return false;
+});
+</script>
+}
+
 
 @*<div class='row'>
-    <div class='col-md-4'>
-        <a href='@Url.Action('Delete', 'AccessRequests')'>KOKO</a>
-    </div>
-    <div class='col-md-4'>
+        <div class='col-md-4'>
+            <a href='@Url.Action('GetPdf', 'PdfAjax')'>KOKO</a>
+        </div>
+        <div class='col-md-4'>
 
-    </div>
-    <div class='col-md-4'>
+        </div>
+        <div class='col-md-4'>
 
-    </div>
-</div>*@
+        </div>
+    </div>*@
